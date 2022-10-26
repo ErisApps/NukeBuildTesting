@@ -32,10 +32,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Authenticate to GitHub Package Registry
         id: Authenticate
-        run: dotnet nuget add source --username $REPOSITORY_OWNER --password $GITHUB_TOKEN --store-password-in-clear-text --name github $REPOSITORY_URL
+        run: dotnet nuget update source "Atlas-Rhythm GH Packages" --username $REPOSITORY_OWNER --password $GITHUB_TOKEN --store-password-in-clear-text
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY_OWNER: ${{ github.repository_owner }}
-          REPOSITORY_URL: https://nuget.pkg.github.com/Atlas-Rhythm/index.json
       - name: Run './build.cmd Compile'
         run: ./build.cmd Compile
