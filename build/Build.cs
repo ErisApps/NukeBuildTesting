@@ -1,3 +1,5 @@
+using System.IO.Compression;
+using Components;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.ProjectModel;
@@ -7,10 +9,11 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 [GitHubActions("Build",
 	GitHubActionsImage.UbuntuLatest,
 	AutoGenerate = true,
-	OnPushBranches = new[] { "master" },
+	OnPushBranches = new[] { "main" },
 	InvokedTargets = new[] { nameof(Compile) },
-	OnPullRequestBranches = new[] { "master" })]
-class Build : NukeBuild
+	PublishArtifacts = true,
+	OnPullRequestBranches = new[] { "main" })]
+class Build : NukeBuild, IProvidePaths, IClean, IDeserializeManifest, IDownloadGameRefs, IDownloadBeatModsDependencies
 {
 	/// Support plugins are available for:
 	///   - JetBrains ReSharper        https://nuke.build/resharper
@@ -21,31 +24,23 @@ class Build : NukeBuild
 
 	[Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")] readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-	[Secret] [Parameter(Name = "SIRA_SERVER_CODE")] readonly string SiraServerCode;
-
 	[Solution(GenerateProjects = true)] readonly Solution Solution;
 
-	Target Clean => _ => _
-		.Before(Restore)
-		.Executes(() =>
-		{
-			DotNetClean(settings => settings
-				.SetConfiguration(Solution.Configurations.)
-				.SetProject(Solution));
-		});
+	GitHubActions GitHubActions => GitHubActions.Instance;
 
-	Target Restore => _ => _
-		.Executes(() =>
-		{
-			DotNetRestore(settings => settings
-				.SetProjectFile(Solution));
-		});
+	Target RestorePackages => _ => _
+		.DependsOn<IClean>()
+		.Executes(() => DotNetRestore(settings => settings.SetProjectFile(Solution.MorePrecisePlayerHeight)));
 
 	Target Compile => _ => _
-		.DependsOn(Restore)
-		.Executes(() => DotNetBuild(settings => settings
-			.SetConfiguration(Configuration)
-			.SetProjectFile(Solution)
-			.EnableNoRestore()
-		));
+		.DependsOn(RestorePackages)
+		.DependsOn<IDownloadGameRefs>()
+		.DependsOn<IDownloadBeatModsDependencies>()
+		.Executes(() =>
+		{
+			DotNetBuild(settings => settings
+				.SetConfiguration(Configuration)
+				.SetProjectFile(Solution.MorePrecisePlayerHeight)
+				.EnableNoRestore());
+		});
 }
