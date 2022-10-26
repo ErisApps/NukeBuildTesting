@@ -12,7 +12,8 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 	OnPushBranches = new[] { "main" },
 	InvokedTargets = new[] { nameof(Compile) },
 	PublishArtifacts = true,
-	OnPullRequestBranches = new[] { "main" })]
+	OnPullRequestBranches = new[] { "main" },
+	CacheKeyFiles = new string[0])]
 class Build : NukeBuild, IProvidePaths, IClean, IDeserializeManifest, IDownloadGameRefs, IDownloadBeatModsDependencies
 {
 	/// Support plugins are available for:
