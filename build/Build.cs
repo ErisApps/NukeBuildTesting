@@ -8,7 +8,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [GitHubActions("Build",
 	GitHubActionsImage.UbuntuLatest,
-	AutoGenerate = true,
+	AutoGenerate = false,
 	OnPushBranches = new[] { "main" },
 	InvokedTargets = new[] { nameof(Compile) },
 	PublishArtifacts = true,

@@ -29,8 +29,8 @@ jobs:
     name: ubuntu-latest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Authenticate to GitHub Package Registry
+      - uses: actions/checkout@v3
+      - name: Authenticate to GitHub Package Registry (Workaround till Hive.Versioning package is available on NuGet)
         id: Authenticate
         run: dotnet nuget update source "Atlas-Rhythm GH Packages" --username $REPOSITORY_OWNER --password $GITHUB_TOKEN --store-password-in-clear-text
         env:
