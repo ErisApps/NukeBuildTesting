@@ -1,6 +1,6 @@
-using System.IO.Compression;
 using Components;
 using Nuke.Common;
+using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
@@ -13,7 +13,9 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 	InvokedTargets = new[] { nameof(Compile) },
 	PublishArtifacts = true,
 	OnPullRequestBranches = new[] { "main" },
-	CacheKeyFiles = new string[0])]
+	CacheKeyFiles = new string[0],
+	ImportSecrets = new[] { "SIRA_SERVER_CODE" })]
+[ShutdownDotNetAfterServerBuild]
 class Build : NukeBuild, IProvidePaths, IClean, IDeserializeManifest, IDownloadGameRefs, IDownloadBeatModsDependencies
 {
 	/// Support plugins are available for:
@@ -27,7 +29,7 @@ class Build : NukeBuild, IProvidePaths, IClean, IDeserializeManifest, IDownloadG
 
 	[Solution(GenerateProjects = true)] readonly Solution Solution;
 
-	GitHubActions GitHubActions => GitHubActions.Instance;
+	[CI] readonly GitHubActions GitHubActions;
 
 	Target RestorePackages => _ => _
 		.DependsOn<IClean>()

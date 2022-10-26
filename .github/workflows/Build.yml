@@ -38,3 +38,5 @@ jobs:
           REPOSITORY_OWNER: ${{ github.repository_owner }}
       - name: Run './build.cmd Compile'
         run: ./build.cmd Compile
+        env:
+          SIRA_SERVER_CODE: ${{ secrets.SIRA_SERVER_CODE }}
