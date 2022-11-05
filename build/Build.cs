@@ -31,6 +31,10 @@ class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs, IDownl
 
 	[CI] readonly GitHubActions GitHubActions;
 
+	Target IDownloadGameRefs.DownloadGameRefs => _ => _
+		.TryAfter<IClean>()
+		.Inherit<IDownloadGameRefs>();
+
 	Target RestorePackages => _ => _
 		.DependsOn<IClean>()
 		.Executes(() => DotNetRestore(settings => settings.SetProjectFile(Solution.MorePrecisePlayerHeight)));

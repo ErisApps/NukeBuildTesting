@@ -16,9 +16,7 @@ interface IDownloadGameRefs : IProvideRefsDirectoryPath
 	[Parameter(Name = "SIRA_SERVER_CODE")]
 	string? SiraServerCode => TryGetValue(() => SiraServerCode);
 
-
 	Target DownloadGameRefs => _ => _
-		.TryAfter<IClean>()
 		.DependsOn<IDeserializeManifest>(x => x.DeserializeManifest)
 		.Requires(() => !string.IsNullOrWhiteSpace(SiraServerCode))
 		.OnlyWhenDynamic(() => !string.IsNullOrWhiteSpace(GameVersion))
