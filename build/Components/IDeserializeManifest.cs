@@ -13,7 +13,7 @@ interface IDeserializeManifest : INukeBuild
 	static PluginManifest? Manifest { get; set; }
 
 	[Parameter]
-	AbsolutePath ManifestPath => TryGetValue(() => ManifestPath) ?? RootDirectory / "src" / "MorePrecisePlayerHeight" / "manifest.json";
+	AbsolutePath ManifestPath => TryGetValue(() => ManifestPath) ?? RootDirectory / "manifest.json";
 
 	Target DeserializeManifest => _ => _
 		.TryAfter<IClean>()

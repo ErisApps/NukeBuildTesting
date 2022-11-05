@@ -16,7 +16,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 	CacheKeyFiles = new string[0],
 	ImportSecrets = new[] { "SIRA_SERVER_CODE" })]
 [ShutdownDotNetAfterServerBuild]
-class Build : NukeBuild, IProvidePaths, IClean, IDeserializeManifest, IDownloadGameRefs, IDownloadBeatModsDependencies
+class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs, IDownloadBeatModsDependencies
 {
 	/// Support plugins are available for:
 	///   - JetBrains ReSharper        https://nuke.build/resharper

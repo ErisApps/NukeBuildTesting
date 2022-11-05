@@ -2,12 +2,11 @@ using System.IO.Compression;
 using System.Net.Http;
 using Helpers;
 using Nuke.Common;
-using Nuke.Common.IO;
 using Serilog;
 
 namespace Components;
 
-interface IDownloadGameRefs : INukeBuild
+interface IDownloadGameRefs : IProvideRefsDirectoryPath
 {
 	private const string PROJECT_SIRA_CDN_URL = "https://cdn.project-sira.tech/gate";
 
@@ -17,8 +16,6 @@ interface IDownloadGameRefs : INukeBuild
 	[Parameter(Name = "SIRA_SERVER_CODE")]
 	string? SiraServerCode => TryGetValue(() => SiraServerCode);
 
-	[Parameter]
-	AbsolutePath ExtractPath => TryGetValue(() => ExtractPath) ?? RootDirectory / "src" / "Refs";
 
 	Target DownloadGameRefs => _ => _
 		.TryAfter<IClean>()
@@ -36,10 +33,10 @@ interface IDownloadGameRefs : INukeBuild
 			using var gameRefsResponse = await httpClient.GetAsync(urlBuilder, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 			gameRefsResponse.EnsureSuccessStatusCode();
 
-			Log.Information("Extracting game refs to {ExtractPath}", ExtractPath);
+			Log.Information("Extracting game refs to {ExtractionPath}", RefsDirectory);
 			await using var gameRefsStream = await gameRefsResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
 			using var zipArchive = new ZipArchive(gameRefsStream);
-			zipArchive.ExtractToDirectory(ExtractPath);
+			zipArchive.ExtractToDirectory(RefsDirectory);
 
 			Log.Information("Finished extracting game refs");
 		});

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Net.Http;
@@ -9,12 +8,11 @@ using Helpers.JSON;
 using Hive.Versioning;
 using Models.BeatMods;
 using Nuke.Common;
-using Nuke.Common.IO;
 using Serilog;
 
 namespace Components;
 
-interface IDownloadBeatModsDependencies : INukeBuild
+interface IDownloadBeatModsDependencies : IProvideRefsDirectoryPath
 {
 	private const string BEAT_MODS_VERSIONS = "https://versions.beatmods.com/versions.json";
 	private const string BEAT_MODS_ALIAS = "https://alias.beatmods.com/aliases.json";
@@ -23,9 +21,6 @@ interface IDownloadBeatModsDependencies : INukeBuild
 	private const string BEAT_MODS_API_URL = $"{BEAT_MODS_BASE_URL}/api/v1/";
 
 	private static Dictionary<string, VersionRange> Dependencies => IDeserializeManifest.Manifest!.Dependencies;
-
-	[Parameter]
-	AbsolutePath ExtractPath => TryGetValue(() => ExtractPath) ?? RootDirectory / "src" / "Refs";
 
 	Target DownloadDependencies => _ => _
 		.TryAfter<IClean>()
@@ -66,7 +61,7 @@ interface IDownloadBeatModsDependencies : INukeBuild
 				Log.Debug("Extracting {ModName} with version {ModVersion}", modBase.Name, modBase.Version);
 				await using var beatModsDependencyStream = await beatModsDependencyResponse.Content.ReadAsStreamAsync().ConfigureAwait(false);
 				using var zipArchive = new ZipArchive(beatModsDependencyStream);
-				zipArchive.ExtractToDirectory(ExtractPath);
+				zipArchive.ExtractToDirectory(RefsDirectory);
 			}
 
 			foreach (var (modName, versionRange) in Dependencies)
