@@ -2,8 +2,11 @@ using Components;
 using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Utilities.Collections;
+using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [GitHubActions("Build",
@@ -30,6 +33,13 @@ class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs, IDownl
 	[Solution(GenerateProjects = true)] readonly Solution Solution;
 
 	[CI] readonly GitHubActions GitHubActions;
+
+	Target IClean.Clean => _ => _
+		.Inherit<IClean>()
+		.Executes(() =>
+		{
+			Solution.MorePrecisePlayerHeight.Directory.GlobDirectories("**/bin", "**/obj").ForEach(EnsureCleanDirectory);
+		});
 
 	Target IDownloadGameRefs.DownloadGameRefs => _ => _
 		.TryAfter<IClean>()
