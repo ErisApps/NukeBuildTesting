@@ -349,3 +349,6 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 .idea
+
+# Ignore Refs folder in case it gets pulled in by Nuke
+src/Refs
