@@ -1,6 +1,6 @@
 {
 	"$schema": "./build.schema.json",
 	"Solution": "MorePrecisePlayerHeight.sln",
-	"Root": "src",
-	"ManifestPath": "src/MorePrecisePlayerHeight/manifest.json"
+	"SourceDirectory": "./src",
+	"ManifestPath": "./src/MorePrecisePlayerHeight/manifest.json"
 }

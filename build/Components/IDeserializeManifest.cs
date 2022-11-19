@@ -8,12 +8,12 @@ using Serilog;
 
 namespace Components;
 
-interface IDeserializeManifest : INukeBuild
+interface IDeserializeManifest : IProvideSourceDirectory
 {
 	static PluginManifest? Manifest { get; set; }
 
 	[Parameter]
-	AbsolutePath ManifestPath => TryGetValue(() => ManifestPath) ?? RootDirectory / "manifest.json";
+	AbsolutePath ManifestPath => TryGetValue(() => ManifestPath) ?? SourceDirectory / "manifest.json";
 
 	Target DeserializeManifest => _ => _
 		.TryAfter<IClean>()

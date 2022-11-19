@@ -3,12 +3,9 @@ using static Nuke.Common.IO.FileSystemTasks;
 
 namespace Components
 {
-	public interface IClean : IProvideRefsDirectoryPath
+	public interface IClean : IProvideRefsDirectory
 	{
 		Target Clean => _ => _
-			.Executes(() =>
-			{
-				EnsureCleanDirectory(RefsDirectory);
-			});
+			.Executes(() => EnsureCleanDirectory(RefsDirectory));
 	}
 }

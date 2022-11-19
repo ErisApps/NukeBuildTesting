@@ -6,7 +6,7 @@ using Serilog;
 
 namespace Components;
 
-interface IDownloadGameRefs : IProvideRefsDirectoryPath
+interface IDownloadGameRefs : IProvideRefsDirectory
 {
 	private const string PROJECT_SIRA_CDN_URL = "https://cdn.project-sira.tech/gate";
 

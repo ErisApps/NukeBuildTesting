@@ -12,7 +12,7 @@ using Serilog;
 
 namespace Components;
 
-interface IDownloadBeatModsDependencies : IProvideRefsDirectoryPath
+interface IDownloadBeatModsDependencies : IProvideRefsDirectory
 {
 	private const string BEAT_MODS_VERSIONS = "https://versions.beatmods.com/versions.json";
 	private const string BEAT_MODS_ALIAS = "https://alias.beatmods.com/aliases.json";
