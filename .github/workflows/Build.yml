@@ -30,13 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Authenticate to GitHub Package Registry (Workaround till Hive.Versioning package is available on NuGet)
-        id: Authenticate
-        run: dotnet nuget update source "Atlas-Rhythm GH Packages" --username $REPOSITORY_OWNER --password $GITHUB_TOKEN --store-password-in-clear-text
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY_OWNER: ${{ github.repository_owner }}
       - name: Run './build.cmd Compile'
         run: ./build.cmd Compile
         env:
+          GH_PACKAGES_USER: ${{ github.repository_owner }}
+          GH_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SIRA_SERVER_CODE: ${{ secrets.SIRA_SERVER_CODE }}

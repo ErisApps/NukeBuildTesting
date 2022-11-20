@@ -65,5 +65,9 @@ else {
 
 Write-Output "Microsoft (R) .NET SDK version $(& $env:DOTNET_EXE --version)"
 
+if ((Test-Path env:GH_PACKAGES_USER) -AND (Test-Path $env:GH_PACKAGES_TOKEN)) {
+    ExecSafe { & $env:DOTNET_EXE nuget update source "Atlas-Rhythm GH Packages" --username $env:GH_PACKAGES_USER --password $env:GH_PACKAGES_TOKEN --store-password-in-clear-text }
+}
+
 ExecSafe { & $env:DOTNET_EXE build $BuildProjectFile /nodeReuse:false /p:UseSharedCompilation=false -nologo -clp:NoSummary --verbosity quiet }
 ExecSafe { & $env:DOTNET_EXE run --project $BuildProjectFile --no-build -- $BuildArguments }
