@@ -5,6 +5,6 @@ namespace Components;
 
 public interface IProvideSourceDirectory : INukeBuild
 {
-	[Parameter]
+	[Parameter("Path to the source directory")]
 	AbsolutePath SourceDirectory => TryGetValue(() => SourceDirectory) ?? RootDirectory;
 }

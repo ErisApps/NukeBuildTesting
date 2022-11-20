@@ -5,7 +5,7 @@ namespace Components
 {
 	public interface IProvideRefsDirectory : IProvideSourceDirectory
 	{
-		[Parameter]
+		[Parameter("Path to the Refs directory, defaults to a folder named 'Refs' in the source directory")]
 		AbsolutePath RefsDirectory => TryGetValue(() => RefsDirectory) ?? SourceDirectory / "Refs";
 	}
 }

@@ -12,7 +12,7 @@ interface IDeserializeManifest : IProvideSourceDirectory
 {
 	static PluginManifest? Manifest { get; set; }
 
-	[Parameter]
+	[Parameter("Path to manifest.json")]
 	AbsolutePath ManifestPath => TryGetValue(() => ManifestPath) ?? SourceDirectory / "manifest.json";
 
 	Target DeserializeManifest => _ => _

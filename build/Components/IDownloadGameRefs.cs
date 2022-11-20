@@ -13,7 +13,7 @@ interface IDownloadGameRefs : IProvideRefsDirectory
 	private static string? GameVersion => IDeserializeManifest.Manifest?.GameVersion;
 
 	[Secret]
-	[Parameter(Name = "SIRA_SERVER_CODE")]
+	[Parameter("SIRA CDN Code", Name = "SIRA_SERVER_CODE")]
 	string? SiraServerCode => TryGetValue(() => SiraServerCode);
 
 	Target DownloadGameRefs => _ => _

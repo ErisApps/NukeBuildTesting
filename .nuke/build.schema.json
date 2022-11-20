@@ -44,7 +44,8 @@
           ]
         },
         "ManifestPath": {
-          "type": "string"
+          "type": "string",
+          "description": "Path to manifest.json"
         },
         "NoLogo": {
           "type": "boolean",
@@ -66,7 +67,8 @@
           }
         },
         "RefsDirectory": {
-          "type": "string"
+          "type": "string",
+          "description": "Path to the Refs directory, defaults to a folder named 'Refs' in the source directory"
         },
         "Root": {
           "type": "string",
@@ -74,6 +76,7 @@
         },
         "SIRA_SERVER_CODE": {
           "type": "string",
+          "description": "SIRA CDN Code",
           "default": "Secrets must be entered via 'nuke :secrets [profile]'"
         },
         "Skip": {
@@ -96,7 +99,8 @@
           "description": "Path to a solution file that is automatically loaded"
         },
         "SourceDirectory": {
-          "type": "string"
+          "type": "string",
+          "description": "Path to the source directory"
         },
         "Target": {
           "type": "array",
