@@ -58,7 +58,7 @@ fi
 
 echo "Microsoft (R) .NET SDK version $("$DOTNET_EXE" --version)"
 
-if [[ ! -z ${$GH_PACKAGES_USER+x} && "$GH_PACKAGES_USER" != "" && ! -z ${$GH_PACKAGES_TOKEN+x} && "$GH_PACKAGES_TOKEN" != "" ]]; then
+if [[ ! -z ${GH_PACKAGES_USER+x} && "$GH_PACKAGES_USER" != "" && ! -z ${GH_PACKAGES_TOKEN+x} && "$GH_PACKAGES_TOKEN" != "" ]]; then
     "$DOTNET_EXE" nuget update source "Atlas-Rhythm GH Packages" --username "$GH_PACKAGES_USER" --password "$GH_PACKAGES_TOKEN" --store-password-in-clear-text
 fi
 
