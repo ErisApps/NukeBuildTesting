@@ -1,4 +1,4 @@
-using Components;
+using BeatSaberModdingTools.Nuke.Components;
 using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;

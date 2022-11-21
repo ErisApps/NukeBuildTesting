@@ -12,7 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Hive.Versioning.Standalone" Version="0.1.0-gh901.1" />
+		<PackageReference Include="beatsabermoddingtools.nuke" Version="1.0.2" />
 		<PackageReference Include="Nuke.Common" Version="6.2.1" />
 	</ItemGroup>
 
