@@ -80,7 +80,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BeatSaberModdingTools.Tasks" Version="2.0.0-beta5">
+		<PackageReference Include="BeatSaberModdingTools.Tasks" Version="2.0.0-beta6">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
