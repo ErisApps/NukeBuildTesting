@@ -41,5 +41,5 @@ jobs:
             SIRA_SERVER_CODE: ${{ secrets.SIRA_SERVER_CODE }}
       - uses: actions/upload-artifact@v3
         with:
-          name: {{ steps.NukeBuild.outputs.filename }}
-          path: {{ steps.NukeBuild.outputs.artifactpath }}
+          name: ${{ steps.NukeBuild.outputs.filename }}
+          path: ${{ steps.NukeBuild.outputs.artifactpath }}

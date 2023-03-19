@@ -31,7 +31,6 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 		.Executes(() =>
 		{
 			DotNetClean(s => s.SetProject(Solution.MorePrecisePlayerHeight));
-			EnsureCleanDirectory(ArtifactsDirectory);
 		});
 
 	Target GrabRefs => _ => _
