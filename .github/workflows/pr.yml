@@ -35,8 +35,9 @@ jobs:
       - name: Run './build.cmd Compile'
         run: ./build.cmd Compile
         env:
-          SIRA_SERVER_CODE: ${{ secrets.SIRA_SERVER_CODE }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GH_PACKAGES_USER: ${{ github.repository_owner }}
+            GH_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SIRA_SERVER_CODE: ${{ secrets.SIRA_SERVER_CODE }}
       - uses: actions/upload-artifact@v3
         with:
           name: artifacts
