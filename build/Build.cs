@@ -45,12 +45,9 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 		.DependsOn<IClean>()
 		.Executes(() => DotNetRestore(settings => settings.SetProjectFile(Solution.MorePrecisePlayerHeight)));
 
-	AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
-
 	Target Compile => _ => _
 		.DependsOn(RestorePackages)
 		.DependsOn(GrabRefs)
-		.Produces(ArtifactsDirectory / "*.zip")
 		.Executes(() =>
 		{
 			DotNetBuild(settings => settings
@@ -60,7 +57,6 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 				.SetVersion(GitVersion.FullSemVer)
 				.SetAssemblyVersion(GitVersion.AssemblySemVer)
 				.SetFileVersion(GitVersion.AssemblySemFileVer)
-				.SetInformationalVersion(GitVersion.InformationalVersion)
-				.SetProperty("ZipDestinationDirectory", ArtifactsDirectory));
+				.SetInformationalVersion(GitVersion.InformationalVersion));
 		});
 }

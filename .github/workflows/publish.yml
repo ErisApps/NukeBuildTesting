@@ -30,6 +30,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run './build.cmd Compile'
+        id: NukeBuild
         run: ./build.cmd Compile
         env:
             GH_PACKAGES_USER: ${{ github.repository_owner }}
@@ -37,5 +38,5 @@ jobs:
             SIRA_SERVER_CODE: ${{ secrets.SIRA_SERVER_CODE }}
       - uses: actions/upload-artifact@v3
         with:
-          name: artifacts
-          path: artifacts
+            name: {{ steps.NukeBuild.outputs.filename }}
+            path: {{ steps.NukeBuild.outputs.artifactpath }}
