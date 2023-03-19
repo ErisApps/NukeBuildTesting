@@ -1,25 +1,17 @@
 using BeatSaberModdingTools.Nuke.Components;
 using Nuke.Common;
 using Nuke.Common.CI;
-using Nuke.Common.CI.GitHubActions;
+using Nuke.Common.CI.GitHubActions.Configuration;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.GitVersion;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-[GitHubActions("Build",
-	GitHubActionsImage.UbuntuLatest,
-	AutoGenerate = false,
-	OnPushBranches = new[] { "main" },
-	InvokedTargets = new[] { nameof(Compile) },
-	PublishArtifacts = true,
-	OnPullRequestBranches = new[] { "main" },
-	CacheKeyFiles = new string[0],
-	ImportSecrets = new[] { "SIRA_SERVER_CODE" })]
 [ShutdownDotNetAfterServerBuild]
-class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs, IDownloadBeatModsDependencies
+partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs, IDownloadBeatModsDependencies
 {
 	/// Support plugins are available for:
 	///   - JetBrains ReSharper        https://nuke.build/resharper
@@ -28,36 +20,49 @@ class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs, IDownl
 	///   - Microsoft VSCode           https://nuke.build/vscode
 	public static int Main() => Execute<Build>(x => x.Compile);
 
-	[Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")] readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+	[Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")] readonly Configuration Configuration = IsLocalBuild ? Configuration.Release : Configuration.Release;
 
 	[Solution(GenerateProjects = true)] readonly Solution Solution;
 
-	[CI] readonly GitHubActions GitHubActions;
+	[GitVersion] readonly GitVersion GitVersion;
+
+
 
 	Target IClean.Clean => _ => _
 		.Inherit<IClean>()
 		.Executes(() =>
 		{
-			Solution.MorePrecisePlayerHeight.Directory.GlobDirectories("**/bin", "**/obj").ForEach(EnsureCleanDirectory);
+			DotNetClean(s => s.SetProject(Solution.MorePrecisePlayerHeight));
+			EnsureCleanDirectory(ArtifactsDirectory);
 		});
 
-	Target IDownloadGameRefs.DownloadGameRefs => _ => _
-		.TryAfter<IClean>()
-		.Inherit<IDownloadGameRefs>();
+	Target GrabRefs => _ => _
+		.After(RestorePackages)
+		.OnlyWhenStatic(() => false)
+		.WhenSkipped(DependencyBehavior.Skip)
+		.DependsOn<IDownloadGameRefs>()
+		.DependsOn<IDownloadBeatModsDependencies>();
 
 	Target RestorePackages => _ => _
 		.DependsOn<IClean>()
 		.Executes(() => DotNetRestore(settings => settings.SetProjectFile(Solution.MorePrecisePlayerHeight)));
 
+	AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+
 	Target Compile => _ => _
 		.DependsOn(RestorePackages)
-		.DependsOn<IDownloadGameRefs>()
-		.DependsOn<IDownloadBeatModsDependencies>()
+		.DependsOn(GrabRefs)
+		.Produces(ArtifactsDirectory / "*.zip")
 		.Executes(() =>
 		{
 			DotNetBuild(settings => settings
-				.SetConfiguration(Configuration)
+				.EnableNoRestore()
 				.SetProjectFile(Solution.MorePrecisePlayerHeight)
-				.EnableNoRestore());
+				.SetConfiguration(Configuration)
+				.SetVersion(GitVersion.FullSemVer)
+				.SetAssemblyVersion(GitVersion.AssemblySemVer)
+				.SetFileVersion(GitVersion.AssemblySemFileVer)
+				.SetInformationalVersion(GitVersion.InformationalVersion)
+				.SetProperty("ZipDestinationDirectory", ArtifactsDirectory));
 		});
 }

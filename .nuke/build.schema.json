@@ -90,6 +90,7 @@
               "DeserializeManifest",
               "DownloadDependencies",
               "DownloadGameRefs",
+              "GrabRefs",
               "RestorePackages"
             ]
           }
@@ -113,6 +114,7 @@
               "DeserializeManifest",
               "DownloadDependencies",
               "DownloadGameRefs",
+              "GrabRefs",
               "RestorePackages"
             ]
           }
