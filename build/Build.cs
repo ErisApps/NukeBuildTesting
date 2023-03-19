@@ -26,8 +26,6 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 
 	[GitVersion] readonly GitVersion GitVersion;
 
-
-
 	Target IClean.Clean => _ => _
 		.Inherit<IClean>()
 		.Executes(() =>
@@ -38,7 +36,7 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 
 	Target GrabRefs => _ => _
 		.After(RestorePackages)
-		.OnlyWhenStatic(() => false)
+		.OnlyWhenStatic(() => IsServerBuild)
 		.WhenSkipped(DependencyBehavior.Skip)
 		.DependsOn<IDownloadGameRefs>()
 		.DependsOn<IDownloadBeatModsDependencies>();
