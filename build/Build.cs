@@ -98,9 +98,11 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 			// Glob artifacts
 			var globbingPath = Solution.MorePrecisePlayerHeight.Directory / "bin" / Configuration;
 			var artifactPaths = Glob
-				.Files(globbingPath, "**/*.zip");
+				.Files(globbingPath, "**/*.zip")
+				.ToArray();
 
 			// Add artifact to release
+			Assert.NotEmpty(artifactPaths);
 			var assetUploadTasks = artifactPaths
 				.Select(filePath => AddArtifactToRelease(createdRelease, filePath));
 			await Task.WhenAll(assetUploadTasks);
