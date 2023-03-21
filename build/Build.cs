@@ -61,7 +61,8 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 				.SetVersion(GitVersion.FullSemVer)
 				.SetAssemblyVersion(GitVersion.AssemblySemVer)
 				.SetFileVersion(GitVersion.AssemblySemFileVer)
-				.SetInformationalVersion(GitVersion.InformationalVersion));
+				.SetInformationalVersion(GitVersion.InformationalVersion)
+				.SetVerbosity(DotNetVerbosity.Detailed));
 		});
 
 	[GitRepository]
