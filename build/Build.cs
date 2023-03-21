@@ -12,6 +12,7 @@ using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Tools.GitVersion;
 using Octokit;
 using Octokit.Internal;
+using Serilog;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 [ShutdownDotNetAfterServerBuild]
@@ -97,8 +98,7 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 			// Glob artifacts
 			var globbingPath = Solution.MorePrecisePlayerHeight.Directory / "bin" / Configuration;
 			var artifactPaths = Glob
-				.Files(globbingPath, "**/*.zip")
-				.Select(relativePath => globbingPath / relativePath);
+				.Files(globbingPath, "**/*.zip");
 
 			// Add artifact to release
 			var assetUploadTasks = artifactPaths
@@ -108,6 +108,9 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 
 	static async Task AddArtifactToRelease(Release createdRelease, string filePath)
 	{
+		Assert.FileExists(filePath);
+		Log.Information("Uploading file at location {FilePath}", filePath);
+
 		var artifactName = Path.GetFileName(filePath);
 		await using var fileStream = File.OpenRead(filePath);
 		var releaseAssetUpload = new ReleaseAssetUpload
