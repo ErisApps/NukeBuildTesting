@@ -7,4 +7,12 @@
 		<GenerateManifest>True</GenerateManifest>
 		<BaseManifestPath>manifest.json</BaseManifestPath>
 	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<DisableZipRelease>True</DisableZipRelease>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<DisableZipRelease>False</DisableZipRelease>
+	</PropertyGroup>
 </Project>
