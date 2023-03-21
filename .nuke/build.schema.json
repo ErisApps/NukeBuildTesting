@@ -87,6 +87,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "CreateGitHubRelease",
               "DeserializeManifest",
               "DownloadDependencies",
               "DownloadGameRefs",
@@ -111,6 +112,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "CreateGitHubRelease",
               "DeserializeManifest",
               "DownloadDependencies",
               "DownloadGameRefs",

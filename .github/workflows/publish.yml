@@ -29,12 +29,13 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Run './build.cmd Compile'
+      - name: Run './build.cmd CreateGitHubRelease'
         id: NukeBuild
-        run: ./build.cmd Compile
+        run: ./build.cmd CreateGitHubRelease
         env:
             GH_PACKAGES_USER: ${{ github.repository_owner }}
             GH_PACKAGES_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SIRA_SERVER_CODE: ${{ secrets.SIRA_SERVER_CODE }}
       - uses: actions/upload-artifact@v3
         with:
