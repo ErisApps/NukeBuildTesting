@@ -69,7 +69,6 @@ partial class Build : NukeBuild, IClean, IDeserializeManifest, IDownloadGameRefs
 	Target CreateGitHubRelease => _ => _
 		.DependsOn(Compile)
 		.Requires(() => Configuration == Configuration.Release)
-		.OnlyWhenStatic(() => GitRepository.IsOnMainOrMasterBranch())
 		.Executes(async () =>
 		{
 			// Set credentials for authorized actions
