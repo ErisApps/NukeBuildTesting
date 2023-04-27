@@ -2,7 +2,7 @@
 A very small Beat Saber mod that's let you view your own height with higher precision... at least one more decimal.
 
 ## Installation
-Installation is fairly simple.
+Installation is easy.
 1. Grab the latest plugin release from the [releases page](https://github.com/ErisApps/MorePrecisePlayerHeight/releases)
 2. Drop the .dll file in the Plugins folder of your Beat Saber installation.
 3. Boot it up (or reboot)
