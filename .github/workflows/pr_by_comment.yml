@@ -12,6 +12,11 @@ jobs:
             && contains(github.event.comment.body, '/build')
         runs-on: ubuntu-latest
         steps:
+            - name: Set commit status as pending
+              uses: myrotvorets/set-commit-status-action@1e0d009edcc8c999a7ef68b5f1d9c45cb40abd96
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  status: pending
             - uses: actions/checkout@v3
               with:
                   fetch-depth: 0
@@ -27,3 +32,9 @@ jobs:
               with:
                   name: ${{ steps.NukeBuild.outputs.filename }}
                   path: ${{ steps.NukeBuild.outputs.artifactpath }}
+            - name: Set final commit status
+              uses: myrotvorets/set-commit-status-action@1e0d009edcc8c999a7ef68b5f1d9c45cb40abd96
+              if: always()
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  status: ${{ job.status }}
