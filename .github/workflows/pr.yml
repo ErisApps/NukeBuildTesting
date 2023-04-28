@@ -27,6 +27,8 @@ on:
 jobs:
   workflow:
     name: PR Pipeline
+    if: github.event.name == 'push' ||
+        (github.event.name == 'pull_request' && github.event.pull_request.base.repo.name == github.repository.name)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
