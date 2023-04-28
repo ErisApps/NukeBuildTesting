@@ -14,19 +14,19 @@
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: pr
+name: pr build
 
 on:
   push:
     branches:
       - main
-  pull_request_target:
+  pull_request:
     branches:
       - main
 
 jobs:
-  ubuntu-latest:
-    name: ubuntu-latest
+  workflow:
+    name: Pipeline
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
