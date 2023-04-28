@@ -12,6 +12,9 @@ jobs:
             && contains(github.event.comment.body, '/build')
         runs-on: ubuntu-latest
         steps:
+            - id: comment-branch
+              name: Get PR comment branch
+              uses: xt0rted/pull-request-comment-branch@v2
             - uses: actions/checkout@v3
               with:
                   fetch-depth: 0
@@ -20,7 +23,7 @@ jobs:
               uses: myrotvorets/set-commit-status-action@1e0d009edcc8c999a7ef68b5f1d9c45cb40abd96
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  sha: ${{ git log -1 '--format=format:%H' }}
+                  sha: ${{ steps.comment-branch.outputs.head_sha }}
                   status: pending
             - name: Run './build.cmd Compile'
               id: NukeBuild
@@ -38,5 +41,5 @@ jobs:
               if: always()
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  sha: ${{ git log -1 '--format=format:%H' }}
+                  sha: ${{ steps.comment-branch.outputs.head_sha }}
                   status: ${{ job.status }}
