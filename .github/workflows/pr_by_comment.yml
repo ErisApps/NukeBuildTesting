@@ -20,6 +20,7 @@ jobs:
               uses: myrotvorets/set-commit-status-action@1e0d009edcc8c999a7ef68b5f1d9c45cb40abd96
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
+                  sha: ${{ git log -1 '--format=format:%H' }}
                   status: pending
             - name: Run './build.cmd Compile'
               id: NukeBuild
@@ -37,4 +38,5 @@ jobs:
               if: always()
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
+                  sha: ${{ git log -1 '--format=format:%H' }}
                   status: ${{ job.status }}
