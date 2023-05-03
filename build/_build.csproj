@@ -12,7 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="beatsabermoddingtools.nuke" Version="1.0.4" />
+		<PackageReference Include="beatsabermoddingtools.nuke" Version="1.0.5" />
 		<PackageReference Include="Nuke.Common" Version="6.3.0" />
 	</ItemGroup>
 
